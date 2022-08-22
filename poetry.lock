@@ -10,6 +10,14 @@ python-versions = ">=3.7"
 tests = ["mypy (>=0.800)", "pytest-asyncio", "pytest"]
 
 [[package]]
+name = "decouple"
+version = "0.0.7"
+description = "Decoupling logic"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "django"
 version = "4.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -59,10 +67,11 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a6ca2ad32b8aebe3c671d8877eed45decae10fa53962def2595f56df68e8746e"
+content-hash = "0f8536463ca749936070b4e86b79aa669822e805bb7c8cee562c4498fcb4dd9e"
 
 [metadata.files]
 asgiref = []
+decouple = []
 django = []
 gunicorn = []
 sqlparse = []
