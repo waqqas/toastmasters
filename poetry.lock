@@ -10,14 +10,6 @@ python-versions = ">=3.7"
 tests = ["mypy (>=0.800)", "pytest-asyncio", "pytest"]
 
 [[package]]
-name = "decouple"
-version = "0.0.7"
-description = "Decoupling logic"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[[package]]
 name = "django"
 version = "4.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -49,6 +41,14 @@ setproctitle = ["setproctitle"]
 tornado = ["tornado (>=0.2)"]
 
 [[package]]
+name = "python-decouple"
+version = "3.6"
+description = "Strict separation of settings from code."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.2"
 description = "A non-validating SQL parser."
@@ -67,12 +67,12 @@ python-versions = ">=2"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "0f8536463ca749936070b4e86b79aa669822e805bb7c8cee562c4498fcb4dd9e"
+content-hash = "6acab7d29188151fcc4c87dbd0f90c7b7647a24f5e9411e36b5142e17ca2efb5"
 
 [metadata.files]
 asgiref = []
-decouple = []
 django = []
 gunicorn = []
+python-decouple = []
 sqlparse = []
 tzdata = []
