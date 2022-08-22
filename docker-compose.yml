@@ -1,0 +1,71 @@
+version: '3.9'
+services:
+  redis:
+    image: redis:6.2.6-alpine
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - redis_data:/data
+    command: [ "redis-server", "--port", "${REDIS_PORT}" ]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "redis-cli",
+          "-h",
+          "${REDIS_HOST}",
+          "-p",
+          "${REDIS_PORT}",
+          "ping"
+        ]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - toastmasters-net
+
+  api_db:
+    image: postgres
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    command: [ "postgres", "-c", "log_statement=all" ]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    restart: on-failure
+    networks:
+      - toastmasters-net
+
+  api_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    volumes:
+      - home_data:/root
+    depends_on:
+      api_db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - toastmasters-net
+volumes:
+  pg_data: null
+  redis_data: null
+  home_data: null
+networks:
+  toastmasters-net:
+    external:
+      name: toastmasters-net
