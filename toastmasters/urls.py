@@ -24,4 +24,8 @@ urlpatterns = [
         "gamification/",
         include(("gamification.urls", "gamification"), namespace="gamification"),
     ),
+    path(
+        "event/",
+        include(("event.urls", "event"), namespace="event"),
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
