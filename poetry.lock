@@ -26,6 +26,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "dj-database-url"
+version = "1.0.0"
+description = "Use Database URLs in your Django Application."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">3.2"
+
+[[package]]
 name = "django"
 version = "4.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -41,6 +52,20 @@ tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 [package.extras]
 bcrypt = ["bcrypt"]
 argon2 = ["argon2-cffi (>=19.1.0)"]
+
+[[package]]
+name = "django-heroku"
+version = "0.3.1"
+description = "This is a Django library for Heroku apps."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+dj-database-url = ">=0.5.0"
+django = "*"
+psycopg2 = "*"
+whitenoise = "*"
 
 [[package]]
 name = "filelock"
@@ -116,6 +141,14 @@ toml = "*"
 virtualenv = ">=20.0.8"
 
 [[package]]
+name = "psycopg2"
+version = "2.9.3"
+description = "psycopg2 - Python-PostgreSQL Database Adapter"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "python-decouple"
 version = "3.6"
 description = "Strict separation of settings from code."
@@ -172,25 +205,40 @@ platformdirs = ">=2.4,<3"
 testing = ["pytest-timeout (>=2.1)", "pytest-randomly (>=3.10.3)", "pytest-mock (>=3.6.1)", "pytest-freezegun (>=0.4.2)", "pytest-env (>=0.6.2)", "pytest (>=7.0.1)", "packaging (>=21.3)", "flaky (>=3.7)", "coverage-enable-subprocess (>=1)", "coverage (>=6.2)"]
 docs = ["towncrier (>=21.9)", "sphinx-rtd-theme (>=1)", "sphinx-argparse (>=0.3.1)", "sphinx (>=5.1.1)", "proselint (>=0.13)"]
 
+[[package]]
+name = "whitenoise"
+version = "6.2.0"
+description = "Radically simplified static file serving for WSGI applications"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+brotli = ["brotli"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "564c4672bb57292b7c36dcb8aa9aeb2b829b9bb5f65f14457093598c0c289aab"
+content-hash = "565ac1d518bca09c1ee78f4b30a16c5164ed5395a259085784cc0049650a9bb0"
 
 [metadata.files]
 asgiref = []
 cfgv = []
 distlib = []
+dj-database-url = []
 django = []
+django-heroku = []
 filelock = []
 gunicorn = []
 identify = []
 nodeenv = []
 platformdirs = []
 pre-commit = []
+psycopg2 = []
 python-decouple = []
 pyyaml = []
 sqlparse = []
 toml = []
 tzdata = []
 virtualenv = []
+whitenoise = []

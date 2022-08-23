@@ -18,6 +18,7 @@ RUN apt-get update \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
+RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 WORKDIR /tmp
 

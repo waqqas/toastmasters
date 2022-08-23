@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+import django_heroku
 from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
@@ -83,8 +86,14 @@ WSGI_APPLICATION = "toastmasters.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT", cast=int),
+        # positive integer of seconds.(600=10min)
+        "CONN_MAX_AGE": config("CONN_MAX_AGE", cast=int, default=600),
     }
 }
 
@@ -125,8 +134,12 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+django_heroku.settings(locals())
