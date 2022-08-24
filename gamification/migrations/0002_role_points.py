@@ -9,16 +9,19 @@ point_data = [
     # Basic
     {"name": "Absent", "points": -1},
     {"name": "Attended Meeting", "points": 5},
+    # Speaker
+    {"name": "Prepared Speaker", "points": 8},
+    {"name": "Table Topic Speaker", "points": 6},
     # TAG roles
     {"name": "Vote Counter", "points": 6},
     {"name": "Timer", "points": 6},
     {"name": "Ah Counter", "points": 6},
-    {"name": "Prepared Speaker", "points": 8},
+    {"name": "Grammarian", "points": 6},
     # Evaluator
     {"name": "Table Topic Evaluator", "points": 6},
     {"name": "Prepared Speech Evaluator", "points": 6},
     # Big 3 roles
-    {"name": "Toastmaster of the evening", "points": 7},
+    {"name": "Toastmaster of the Evening", "points": 7},
     {"name": "Table Topic Master", "points": 7},
     {"name": "General Evaluator", "points": 7},
     # Best
