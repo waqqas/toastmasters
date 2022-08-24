@@ -7,16 +7,19 @@ role_data = [
     # Basic
     {"name": "Absent"},
     {"name": "Attended Meeting"},
+    # Speaker
+    {"name": "Prepared Speaker"},
+    {"name": "Table Topic Speaker"},
     # TAG roles
     {"name": "Vote Counter"},
     {"name": "Timer"},
     {"name": "Ah Counter"},
-    {"name": "Prepared Speaker"},
+    {"name": "Grammarian"},
     # Evaluator
     {"name": "Table Topic Evaluator"},
     {"name": "Prepared Speech Evaluator"},
     # Big 3 roles
-    {"name": "Toastmaster of the evening"},
+    {"name": "Toastmaster of the Evening"},
     {"name": "Table Topic Master"},
     {"name": "General Evaluator"},
     # Best
@@ -39,8 +42,8 @@ class Migration(migrations.Migration):
 
     def remove_role_data(apps, schema_editor):
         """Remove initial role data"""
-        roles = [role["name"] for role in role_data]
-        Role.objects.filter(role__in=roles).delete()
+        role_names = [role["name"] for role in role_data]
+        Role.objects.filter(name__in=role_names).delete()
 
     dependencies = [
         ("event", "0001_initial"),
