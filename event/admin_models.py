@@ -1,10 +1,15 @@
 from django.contrib import admin
 
-from event.models import PerformedRole
+from event.models import Participation, PerformedRole
+
+
+class ParticipationInline(admin.TabularInline):
+    model = Participation
 
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ("type", "held_on")
+    inlines = (ParticipationInline,)
 
 
 class RoleAdmin(admin.ModelAdmin):
