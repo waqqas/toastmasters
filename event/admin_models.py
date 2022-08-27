@@ -8,7 +8,14 @@ class ParticipationInline(admin.TabularInline):
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("type", "held_on")
+    list_display = (
+        "type",
+        "held_on",
+    )
+    list_filter = (
+        "type",
+        "held_on",
+    )
     inlines = (ParticipationInline,)
 
 
@@ -21,12 +28,14 @@ class PerformedRoleInline(admin.TabularInline):
 
 
 class ParticipationAdmin(admin.ModelAdmin):
-    list_filter = ("user",)
+    list_filter = ("user", "event__held_on", "event__type")
     inlines = (PerformedRoleInline,)
 
 
 class PerformedRoleAdmin(admin.ModelAdmin):
     list_filter = (
         "participation__user",
+        "participation__event__held_on",
+        "participation__event__type",
         "role__name",
     )
