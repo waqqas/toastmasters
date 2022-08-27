@@ -191,10 +191,21 @@ platformdirs = ">=2.4,<3"
 testing = ["pytest-timeout (>=2.1)", "pytest-randomly (>=3.10.3)", "pytest-mock (>=3.6.1)", "pytest-freezegun (>=0.4.2)", "pytest-env (>=0.6.2)", "pytest (>=7.0.1)", "packaging (>=21.3)", "flaky (>=3.7)", "coverage-enable-subprocess (>=1)", "coverage (>=6.2)"]
 docs = ["towncrier (>=21.9)", "sphinx-rtd-theme (>=1)", "sphinx-argparse (>=0.3.1)", "sphinx (>=5.1.1)", "proselint (>=0.13)"]
 
+[[package]]
+name = "whitenoise"
+version = "6.2.0"
+description = "Radically simplified static file serving for WSGI applications"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+brotli = ["brotli"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "48b5625083dbfe0a92dc7fa370458505ee0e21bdf0f13f4d054503a2bac44716"
+content-hash = "9b625d763822fc71184ce21fccee9399155f08bb13cbc8e81ac9625a98ab49ae"
 
 [metadata.files]
 asgiref = []
@@ -215,3 +226,4 @@ sqlparse = []
 toml = []
 tzdata = []
 virtualenv = []
+whitenoise = []

@@ -12,6 +12,7 @@ Django = "^4.1"
 python-decouple = "^3.6"
 psycopg2-binary = "^2.9.3"
 dj-database-url = "^1.0.0"
+whitenoise = "^6.2.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.20.0"
