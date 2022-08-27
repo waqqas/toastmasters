@@ -37,7 +37,7 @@ class PerformedRole(models.Model):
 
     participation = models.ForeignKey("Participation", on_delete=models.CASCADE)
 
-    role = models.OneToOneField(Role, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.participation} as {self.role}"
