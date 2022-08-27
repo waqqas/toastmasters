@@ -37,6 +37,17 @@ python-versions = "*"
 Django = ">3.2"
 
 [[package]]
+name = "dj-database-url"
+version = "1.0.0"
+description = "Use Database URLs in your Django Application."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">3.2"
+
+[[package]]
 name = "django"
 version = "4.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
@@ -141,7 +152,7 @@ toml = "*"
 virtualenv = ">=20.0.8"
 
 [[package]]
-name = "psycopg2"
+name = "psycopg2-binary"
 version = "2.9.3"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
 category = "main"
@@ -219,12 +230,13 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "565ac1d518bca09c1ee78f4b30a16c5164ed5395a259085784cc0049650a9bb0"
+content-hash = "48b5625083dbfe0a92dc7fa370458505ee0e21bdf0f13f4d054503a2bac44716"
 
 [metadata.files]
 asgiref = []
 cfgv = []
 distlib = []
+dj-database-url = []
 dj-database-url = []
 django = []
 django-heroku = []
@@ -234,7 +246,7 @@ identify = []
 nodeenv = []
 platformdirs = []
 pre-commit = []
-psycopg2 = []
+psycopg2-binary = []
 python-decouple = []
 pyyaml = []
 sqlparse = []

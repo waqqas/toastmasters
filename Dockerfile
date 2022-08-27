@@ -20,10 +20,7 @@ RUN apt-get update \
 
 RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
-WORKDIR /tmp
-
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-interaction --no-ansi
 
-# git configurations
-RUN git config --global core.editor "code --wait"
+COPY . ./
