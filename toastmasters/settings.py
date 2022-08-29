@@ -88,18 +88,7 @@ WSGI_APPLICATION = "toastmasters.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("POSTGRES_DB"),
-        "USER": config("POSTGRES_USER"),
-        "PASSWORD": config("POSTGRES_PASSWORD"),
-        "HOST": config("POSTGRES_HOST"),
-        "PORT": config("POSTGRES_PORT", cast=int),
-        # positive integer of seconds.(600=10min)
-        "CONN_MAX_AGE": config("CONN_MAX_AGE", cast=int, default=600),
-    }
-}
+DATABASES["default"] = dj_database_url.parse(config("DATABASE_URL"), ssl_require=True)
 
 
 # Password validation
