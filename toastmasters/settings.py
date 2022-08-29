@@ -31,7 +31,11 @@ SECRET_KEY = config("SECRET_KEY", get_random_secret_key())
 DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost", cast=Csv())
-CSRF_TRUSTED_ORIGINS = [config("SITE_URL")]
+
+SITE_URL = config("SITE_URL")
+SITE_URL = SITE_URL[:-1] if SITE_URL[-1] == "/" else SITE_URL
+
+CSRF_TRUSTED_ORIGINS = [SITE_URL]
 
 # Application definition
 
