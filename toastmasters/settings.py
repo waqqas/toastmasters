@@ -31,7 +31,7 @@ SECRET_KEY = config("SECRET_KEY", get_random_secret_key())
 DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost", cast=Csv())
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default=[])
+CSRF_TRUSTED_ORIGINS = [config("SITE_URL")]
 
 # Application definition
 
