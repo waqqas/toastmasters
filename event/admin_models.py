@@ -5,6 +5,7 @@ from event.models import Participation, PerformedRole
 
 class ParticipationInline(admin.TabularInline):
     model = Participation
+    extra = 20
 
 
 class EventAdmin(admin.ModelAdmin):
