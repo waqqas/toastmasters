@@ -87,8 +87,10 @@ WSGI_APPLICATION = "toastmasters.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {"default": dj_database_url.parse(config("DATABASE_URL"), ssl_require=True)}
+SSL_REQUIRE = config("SSL_REQUIRE", False, cast=bool)
+DATABASES = {
+    "default": dj_database_url.parse(config("DATABASE_URL"), ssl_require=SSL_REQUIRE)
+}
 
 
 # Password validation
