@@ -35,6 +35,9 @@ class Role(models.Model):
 class PerformedRole(models.Model):
     """Role performed by a person while participating in an event"""
 
+    class Meta:
+        unique_together = ["participation", "role"]
+
     participation = models.ForeignKey("Participation", on_delete=models.CASCADE)
 
     role = models.ForeignKey(Role, on_delete=models.CASCADE)
@@ -48,6 +51,9 @@ class Participation(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["user", "event"]
 
     def __str__(self):
         return f"{self.user} participated in a {self.event}"
