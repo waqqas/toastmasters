@@ -18,3 +18,7 @@ class AwardedPointAdmin(admin.ModelAdmin):
         "performed__role",
         "performed__participation__event__held_on",
     )
+
+
+class AwardAdmin(admin.ModelAdmin):
+    pass
