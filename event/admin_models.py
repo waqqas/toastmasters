@@ -1,14 +1,23 @@
-from django.contrib import admin
+from nested_admin import NestedInlineModelAdmin as InlineModelAdmin
+from nested_admin import NestedModelAdmin as ModelAdmin
+from nested_admin import NestedTabularInline as TabularInline
 
 from event.models import Participation, PerformedRole
+from toastmasters.mixins import ExportCsvMixin
 
 
-class ParticipationInline(admin.TabularInline):
+class PerformedRoleInline(TabularInline):
+    model = PerformedRole
+    extra = 5
+
+
+class ParticipationInline(TabularInline):
     model = Participation
-    extra = 20
+    extra = 25
+    inlines = (PerformedRoleInline,)
 
 
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(ModelAdmin, ExportCsvMixin):
     list_display = (
         "type",
         "held_on",
@@ -20,23 +29,21 @@ class EventAdmin(admin.ModelAdmin):
     inlines = (ParticipationInline,)
 
 
-class RoleAdmin(admin.ModelAdmin):
+class RoleAdmin(ModelAdmin):
     list_display = ("name",)
 
 
-class PerformedRoleInline(admin.TabularInline):
-    model = PerformedRole
-
-
-class ParticipationAdmin(admin.ModelAdmin):
+class ParticipationAdmin(ModelAdmin, ExportCsvMixin):
     list_filter = ("user", "event__held_on", "event__type")
     inlines = (PerformedRoleInline,)
+    actions = ["export_as_csv"]
 
 
-class PerformedRoleAdmin(admin.ModelAdmin):
+class PerformedRoleAdmin(ModelAdmin, ExportCsvMixin):
     list_filter = (
         "participation__user",
         "participation__event__held_on",
         "participation__event__type",
         "role__name",
     )
+    actions = ["export_as_csv"]

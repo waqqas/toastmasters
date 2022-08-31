@@ -54,6 +54,18 @@ bcrypt = ["bcrypt"]
 argon2 = ["argon2-cffi (>=19.1.0)"]
 
 [[package]]
+name = "django-nested-admin"
+version = "3.4.0"
+description = "Django admin classes that allow for nested inlines"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+python-monkey-business = ">=1.0.0"
+six = "*"
+
+[[package]]
 name = "filelock"
 version = "3.8.0"
 description = "A platform independent file lock."
@@ -143,12 +155,31 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "python-monkey-business"
+version = "1.0.0"
+description = "Utility functions for monkey-patching python code"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = ">=1.7.0"
+
+[[package]]
 name = "pyyaml"
 version = "6.0"
 description = "YAML parser and emitter for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.6"
+
+[[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "sqlparse"
@@ -205,7 +236,7 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "9b625d763822fc71184ce21fccee9399155f08bb13cbc8e81ac9625a98ab49ae"
+content-hash = "3f3c21833bd3c0140f3cff1fb318b54ec90481fb316564d1b298b6b81e88bc71"
 
 [metadata.files]
 asgiref = []
@@ -213,6 +244,7 @@ cfgv = []
 distlib = []
 dj-database-url = []
 django = []
+django-nested-admin = []
 filelock = []
 gunicorn = []
 identify = []
@@ -221,7 +253,9 @@ platformdirs = []
 pre-commit = []
 psycopg2-binary = []
 python-decouple = []
+python-monkey-business = []
 pyyaml = []
+six = []
 sqlparse = []
 toml = []
 tzdata = []

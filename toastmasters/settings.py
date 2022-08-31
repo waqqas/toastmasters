@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "accounts",
     "gamification",
     "event",
+    "nested_admin",
 ]
 
 MIDDLEWARE = [
