@@ -6,6 +6,7 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
       - redis_data:/data
+    env_file: .env
     command: [ "redis-server", "--port", "${REDIS_PORT}" ]
     healthcheck:
       test:

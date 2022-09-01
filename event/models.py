@@ -20,7 +20,7 @@ class Event(models.Model):
     )
 
     def __str__(self):
-        return f"{EventType(self.type).label} on {self.held_on}"
+        return f"{EventType(self.type).label} on {self.held_on.strftime('%b. %d, %Y')}"
 
 
 class Role(models.Model):
