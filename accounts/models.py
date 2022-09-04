@@ -1,8 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from gamification.mixins import GamificationUser
 
-class User(AbstractUser):
+
+class User(AbstractUser, GamificationUser):
     """User model"""
 
     def __str__(self):
