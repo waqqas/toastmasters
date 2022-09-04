@@ -1,4 +1,5 @@
-from dateutil.relativedelta import relativedelta
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -34,6 +35,11 @@ class Award(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+    def is_eligible(user: User, award_date: datetime.date):
+        # Check if award is already given
+
+        return True
+
 
 class AwardedAward(models.Model):
     award = models.ForeignKey(Award, on_delete=models.CASCADE)
@@ -41,7 +47,3 @@ class AwardedAward(models.Model):
 
     def __str__(self):
         return f"{self.award} awarded to {self.user} in month of {self.award_date.strftime('%b %Y')}"
-
-    @staticmethod
-    def calculate_award_for_user(user: User):
-        print(user.get_awards_calculation_months())
