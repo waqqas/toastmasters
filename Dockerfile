@@ -1,8 +1,8 @@
 FROM python:3.9
 
-ENV POETRY_VERSION=1.1.13 \
+ENV POETRY_VERSION=1.2.0 \
   POETRY_VIRTUALENVS_CREATE=false \
-  PATH="/root/.poetry/bin:$PATH"
+  PATH="/root/.local/bin:$PATH"
 
 # System deps:
 RUN apt-get update \
@@ -10,7 +10,7 @@ RUN apt-get update \
   $BUILD_ONLY_PACKAGES \
   # Installing `poetry` package manager:
   # https://github.com/python-poetry/poetry
-  && curl -sSL 'https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py' | python \
+  && curl -sSL https://install.python-poetry.org | python \
   && poetry --version \
   # Removing build-time-only dependencies:
   && apt-get remove -y $BUILD_ONLY_PACKAGES \

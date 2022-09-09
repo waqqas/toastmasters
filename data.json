@@ -1,0 +1,92 @@
+[
+    {
+        "model": "accounts.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$390000$IYWc8wrUGKJGisURWMyhKV$H7z+9SpM9PbwRNMI657WM3lqQv3WFgCfv+Gk16slUDA=",
+            "last_login": "2022-08-30T01:35:52.827Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "email": "admin@admin.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2022-08-30T01:26:12.282Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$390000$PSGSyddISy9cE4CRB2xy2x$NeyPdoRI0KtvnlZjvxi7gt/b8ZMhND21Jm/qyifNE/U=",
+            "last_login": null,
+            "is_superuser": true,
+            "username": "waqqas",
+            "first_name": "Waqqas",
+            "last_name": "Jabbar",
+            "email": "waqqas.jabbar@emumba.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2022-08-30T01:36:20Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$390000$uwdi8kp4FwSoMvWfY2LMFm$uqbE0jPO8L5vnL5b784Bka+UXDoPr88qFODgN6jk/+o=",
+            "last_login": null,
+            "is_superuser": true,
+            "username": "ureb",
+            "first_name": "Ureb",
+            "last_name": "Hasan",
+            "email": "ureb.hasan@emumba.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2022-08-30T01:36:53Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$390000$zAbHbgHGNj1bSMzoDciaLp$wGoulLRZVQhztZp4E6NuiHvjuqgjXAPlBUiIDKzgFPI=",
+            "last_login": null,
+            "is_superuser": true,
+            "username": "urooj",
+            "first_name": "Urooj",
+            "last_name": "Kamran",
+            "email": "urooj.kamran@emumba.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2022-08-30T01:37:33Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$390000$8MRIu7OexI1338DlSXGec4$cMx1zlGLTM/TsoCud0lh4Vm83/h6CePi8z8wV1Q0sQQ=",
+            "last_login": null,
+            "is_superuser": true,
+            "username": "rabiya",
+            "first_name": "Rabiya",
+            "last_name": "Naz",
+            "email": "rabiya.naz@emumba.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2022-08-30T01:38:04Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

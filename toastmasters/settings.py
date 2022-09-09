@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "accounts",
-    "gamification",
     "event",
+    "gamification",
     "nested_admin",
 ]
 

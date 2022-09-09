@@ -6,4 +6,4 @@ class GamificationConfig(AppConfig):
     name = "gamification"
 
     def ready(self):
-        from . import signals
+        from . import signals, user
