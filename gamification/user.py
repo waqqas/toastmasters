@@ -3,7 +3,7 @@ from datetime import date, datetime
 from typing import List
 
 from dateutil.relativedelta import relativedelta
-from django.db.models import F, Q, When
+from django.db.models import Count, F, Q, When
 from django.db.models.lookups import GreaterThan, LessThan
 from django.utils.timezone import make_aware
 
@@ -17,19 +17,19 @@ from .models import Award, AwardedAward
 def get_awards_calculation_months(self) -> List[date]:
     """Get a list of months for which awards need to be calculated
 
-    day is always 1st of each month
+    Day is always 1st of each month
     """
     calculate_start = self.last_awards_calculation
     if not calculate_start:
         calculate_start = self.date_joined.date()
-    calculate_start = calculate_start.replace(day=1)
+    calculate_start = start_of_month(calculate_start)
 
     calculate_end = make_aware(datetime.now()).date()
-    calculate_end = calculate_end.replace(day=1)
+    calculate_end = start_of_month(calculate_end)
 
     calculate_for_months = []
 
-    while calculate_start < calculate_end:
+    while calculate_start <= calculate_end:
         calculate_for_months.append(calculate_start)
         calculate_start += relativedelta(months=1)
     return calculate_for_months
@@ -37,7 +37,8 @@ def get_awards_calculation_months(self) -> List[date]:
 
 def calculate_awards(self):
     """Calculate awards for the user"""
-    for award_date in self.get_awards_calculation_months():
+    calculate_for_months = self.get_awards_calculation_months()
+    for award_date in calculate_for_months:
         awards = [
             award
             for award in Award.objects.all()
@@ -46,6 +47,9 @@ def calculate_awards(self):
         awarded_awards = [AwardedAward(user=self, award=award) for award in awards]
         for awarded_award in awarded_awards:
             awarded_award.save()
+    if calculate_for_months:
+        self.last_awards_calculation = calculate_for_months[-1]
+        self.save()
 
 
 def is_eligible(self, award: Award, award_date: date):
@@ -81,6 +85,29 @@ def is_eligible(self, award: Award, award_date: date):
             participation__event__held_on__gte=start_date,
             participation__event__held_on__lt=end_date,
         ).exists()
+    elif award.name == "You Need Me":
+        eligible = PerformedRole.objects.filter(
+            Q(role__name="Speech Evaluator")
+            & Q(role__name="Table Topic Evaluator")
+            & (
+                Q(role__name="Toastmaster of the Evening")
+                | Q(role__name="General Evaluator")
+                | Q(role__name="Table Topic Master")
+            ),
+            participation__user=self,
+            participation__event__held_on__gte=start_date,
+            participation__event__held_on__lt=end_date,
+        ).exists()
+    elif award.name == "I am Everywhere":
+        eligible = (
+            PerformedRole.objects.filter(
+                Q(role__name="Attended Meeting"),
+                participation__user=self,
+                participation__event__held_on__gte=start_date,
+                participation__event__held_on__lt=end_date,
+            ).count()
+            >= 4
+        )
 
     return eligible
 

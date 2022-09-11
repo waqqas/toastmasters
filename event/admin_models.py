@@ -28,6 +28,7 @@ class EventAdmin(ModelAdmin, ExportCsvMixin):
         "held_on",
     )
     inlines = (ParticipationInline,)
+    ordering = ("-held_on",)
 
 
 class RoleAdmin(ModelAdmin):
