@@ -1,9 +1,11 @@
 {
     "cSpell.words": [
+        "dateutil",
         "gamification",
         "gunicorn",
         "performedrole",
         "psycopg",
+        "relativedelta",
         "whitenoise",
         "wsgi"
     ]

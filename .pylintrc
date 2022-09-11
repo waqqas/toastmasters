@@ -7,19 +7,19 @@ extension-pkg-whitelist=
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=.pylintrc
+ignore=migrations
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
-# ignore-patterns=migrations
+ignore-patterns=migrations
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
 
-# init-hook=
-#     sys.path.append(os.getcwd());
-#     from pylint_ignore import PylintIgnorePaths;
-#     PylintIgnorePaths('/migrations/')
+init-hook=
+    sys.path.append(os.getcwd());
+    from pylint_ignore import PylintIgnorePaths;
+    PylintIgnorePaths('/migrations/')
 
 
 # Use multiple processes to speed up Pylint.
@@ -27,7 +27,7 @@ jobs=2
 
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
-# load-plugins=pylint_django
+load-plugins=pylint_django
 
 # Pickle collected data for later comparisons.
 persistent=yes
@@ -59,7 +59,8 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
-disable=logging-fstring-interpolation, too-few-public-methods, broad-except, bare-except
+disable=logging-fstring-interpolation,
+        too-few-public-methods
 
 
 
@@ -245,7 +246,6 @@ good-names=i,
            j,
            k,
            ex,
-           pk,
            Run,
            _
 
@@ -313,6 +313,13 @@ max-line-length=100
 
 # Maximum number of lines in a module
 max-module-lines=1000
+
+# List of optional constructs for which whitespace checking is disabled. `dict-
+# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
+# `trailing-comma` allows a space between comma and closing bracket: (a, ).
+# `empty-line` allows space-only lines.
+no-space-check=trailing-comma,
+               dict-separator
 
 # Allow the body of a class to be on the same line as the declaration if body
 # contains single statement.
@@ -461,3 +468,11 @@ max-statements=50
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
 
+
+[EXCEPTIONS]
+
+# Exceptions that will emit a warning when being caught. Defaults to
+# "Exception"
+overgeneral-exceptions=Exception
+
+django-settings-module=toastmasters.settings

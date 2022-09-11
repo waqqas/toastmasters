@@ -1,5 +1,6 @@
 from nested_admin import NestedInlineModelAdmin as InlineModelAdmin
 from nested_admin import NestedModelAdmin as ModelAdmin
+from nested_admin import NestedStackedInline as StackedInline
 from nested_admin import NestedTabularInline as TabularInline
 
 from event.models import Participation, PerformedRole
@@ -11,9 +12,9 @@ class PerformedRoleInline(TabularInline):
     extra = 5
 
 
-class ParticipationInline(TabularInline):
+class ParticipationInline(StackedInline):
     model = Participation
-    extra = 25
+    extra = 5
     inlines = (PerformedRoleInline,)
 
 
@@ -27,6 +28,7 @@ class EventAdmin(ModelAdmin, ExportCsvMixin):
         "held_on",
     )
     inlines = (ParticipationInline,)
+    ordering = ("-held_on",)
 
 
 class RoleAdmin(ModelAdmin):

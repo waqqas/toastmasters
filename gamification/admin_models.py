@@ -22,3 +22,7 @@ class AwardedPointAdmin(admin.ModelAdmin):
 
 class AwardAdmin(admin.ModelAdmin):
     pass
+
+
+class AwardedAwardAdmin(admin.ModelAdmin):
+    list_filter = ("user",)

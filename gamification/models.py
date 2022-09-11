@@ -28,6 +28,15 @@ class AwardedPoint(models.Model):
 class Award(models.Model):
     name = models.CharField(max_length=128, unique=True)
     description = models.TextField(default=None, null=True, blank=True)
+    user = models.ManyToManyField(User, through="AwardedAward", related_name="awards")
 
     def __str__(self):
         return f"{self.name}"
+
+
+class AwardedAward(models.Model):
+    award = models.ForeignKey(Award, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.award} awarded to {self.user}"

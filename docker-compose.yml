@@ -6,6 +6,7 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
       - redis_data:/data
+    env_file: .env
     command: [ "redis-server", "--port", "${REDIS_PORT}" ]
     healthcheck:
       test:
@@ -29,12 +30,12 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-    command: [ "postgres", "-c", "log_statement=all" ]
+    command: [ "postgres", "-p", "${POSTGRES_PORT}", "-c", "log_statement=all" ]
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -p ${POSTGRES_PORT} -h localhost"
         ]
       interval: 5s
       timeout: 5s
