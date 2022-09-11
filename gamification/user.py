@@ -1,14 +1,24 @@
+"""Methods for GamificationUser"""
 from datetime import date, datetime
 from typing import List
 
 from dateutil.relativedelta import relativedelta
+from django.db.models import F, Q, When
+from django.db.models.lookups import GreaterThan, LessThan
 from django.utils.timezone import make_aware
 
+from event.models import PerformedRole
+
+from .date import start_of_month
 from .mixins import GamificationUser
 from .models import Award, AwardedAward
 
 
 def get_awards_calculation_months(self) -> List[date]:
+    """Get a list of months for which awards need to be calculated
+
+    day is always 1st of each month
+    """
     calculate_start = self.last_awards_calculation
     if not calculate_start:
         calculate_start = self.date_joined.date()
@@ -26,6 +36,7 @@ def get_awards_calculation_months(self) -> List[date]:
 
 
 def calculate_awards(self):
+    """Calculate awards for the user"""
     for award_date in self.get_awards_calculation_months():
         awards = [
             award
@@ -38,7 +49,40 @@ def calculate_awards(self):
 
 
 def is_eligible(self, award: Award, award_date: date):
-    return False
+    """Check if a user is eligible for the award for a give month"""
+    eligible = False
+    start_date = start_of_month(award_date)
+    end_date = start_of_month(award_date + relativedelta(months=1))
+    if award.name == "Been there, Done that":
+        eligible = PerformedRole.objects.filter(
+            Q(role__name="Table Topic Master")
+            & Q(role__name="General Evaluator")
+            & Q(role__name="Table Topic Evaluator")
+            & (
+                Q(role__name="Timer")
+                | Q(role__name="Vote Counter")
+                | Q(role__name="Ah Counter")
+                | Q(role__name="Grammarian")
+            ),
+            participation__user=self,
+            participation__event__held_on__gte=start_date,
+            participation__event__held_on__lt=end_date,
+        ).exists()
+    elif award.name == "You Need Me":
+        eligible = PerformedRole.objects.filter(
+            Q(role__name="Speech Evaluator")
+            & Q(role__name="Table Topic Evaluator")
+            & (
+                Q(role__name="Toastmaster of the Evening")
+                | Q(role__name="General Evaluator")
+                | Q(role__name="Table Topic Master")
+            ),
+            participation__user=self,
+            participation__event__held_on__gte=start_date,
+            participation__event__held_on__lt=end_date,
+        ).exists()
+
+    return eligible
 
 
 setattr(
