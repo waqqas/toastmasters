@@ -105,8 +105,11 @@ def is_eligible(self, award: Award, award_date: date):
                 participation__user=self,
                 participation__event__held_on__gte=start_date,
                 participation__event__held_on__lt=end_date,
-            ).count()
-            >= 4
+            )
+            .values("role")
+            .annotate(num_meetings_attended=Count("role"))
+            .filter(num_meetings_attended__gte=4)
+            .exists()
         )
 
     return eligible
