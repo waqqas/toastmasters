@@ -47,9 +47,9 @@ def calculate_awards(self):
         awarded_awards = [AwardedAward(user=self, award=award) for award in awards]
         for awarded_award in awarded_awards:
             awarded_award.save()
-    if calculate_for_months:
-        self.last_awards_calculation = calculate_for_months[-1]
-        self.save()
+    # if calculate_for_months:
+    #     self.last_awards_calculation = calculate_for_months[-1]
+    #     self.save()
 
 
 def is_eligible(self, award: Award, award_date: date):
@@ -57,6 +57,7 @@ def is_eligible(self, award: Award, award_date: date):
     eligible = False
     start_date = start_of_month(award_date)
     end_date = start_of_month(award_date + relativedelta(months=1))
+
     if award.name == "Been there, Done that":
         eligible = PerformedRole.objects.filter(
             Q(role__name="Table Topic Master")
@@ -109,6 +110,31 @@ def is_eligible(self, award: Award, award_date: date):
             .values("role")
             .annotate(num_meetings_attended=Count("role"))
             .filter(num_meetings_attended__gte=4)
+            .exists()
+        )
+    elif award.name == "Master of Momentum":
+        eligible = (
+            PerformedRole.objects.filter(
+                participation__user=self,
+                participation__event__held_on__gte=start_date,
+                participation__event__held_on__lt=end_date,
+            )
+            .values("role")
+            .annotate(
+                num_speeches=Count("role"), filter=(Q(role__name="Prepared Speaker"))
+            )
+            .filter(num_speeches__gte=2)
+            .values("id")
+            .annotate(
+                num_tag_roles=Count("id"),
+                filter=(
+                    Q(role__name="Timer")
+                    | Q(role__name="Vote Counter")
+                    | Q(role__name="Ah Counter")
+                    | Q(role__name="Grammarian")
+                ),
+            )
+            .filter(num_tag_roles__gte=1)
             .exists()
         )
 
