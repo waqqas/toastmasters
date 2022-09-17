@@ -7,6 +7,7 @@ from rest_framework import serializers
 
 
 class LookupSerializer(serializers.Serializer):
+    valid = serializers.BooleanField(required=False)
     domain = serializers.CharField(required=True, max_length=50)
     registered = serializers.BooleanField(required=False)
     created = serializers.DateField(required=False)
@@ -30,6 +31,8 @@ class LookupPageParserState(str, enum.Enum):
     COMPLETE = "COMPLETE"
     DOMAIN_NOT_FOUND_KEY = "DOMAIN_NOT_FOUND_KEY"
     DOMAIN_NOT_FOUND_VALUE = "DOMAIN_NOT_FOUND"
+    YOUR_SEARCHED_DOMAIN_VALUE = "YOUR_SEARCHED_DOMAIN_VALUE"
+    INVALID_DOMAIN_NAME = "INVALID_DOMAIN_NAME"
 
 
 class DomainSerializer(serializers.Serializer):
@@ -41,6 +44,7 @@ class DomainSerializer(serializers.Serializer):
 
         table = page.find("table", border="0", width="707")
         if table:
+            response["valid"] = True
             state = LookupPageParserState.DOMAIN_NAME_KEY
             for data in table.stripped_strings:
                 if (
@@ -89,14 +93,22 @@ class DomainSerializer(serializers.Serializer):
 
             state = LookupPageParserState.DOMAIN_NOT_FOUND_KEY
             for data in page.stripped_strings:
-                if (
-                    state == LookupPageParserState.DOMAIN_NOT_FOUND_KEY
-                    and data == "Domain not found:"
-                ):
-                    state = LookupPageParserState.DOMAIN_NOT_FOUND_VALUE
+                if state == LookupPageParserState.DOMAIN_NOT_FOUND_KEY:
+                    if data == "Domain not found:":
+                        state = LookupPageParserState.DOMAIN_NOT_FOUND_VALUE
+                    elif data == "Your searched domain:":
+                        state = LookupPageParserState.YOUR_SEARCHED_DOMAIN_VALUE
                 elif state == LookupPageParserState.DOMAIN_NOT_FOUND_VALUE:
                     response["domain"] = data
+                    response["valid"] = True
                     state = LookupPageParserState.COMPLETE
+                elif state == LookupPageParserState.YOUR_SEARCHED_DOMAIN_VALUE:
+                    response["domain"] = data
+                    state = LookupPageParserState.INVALID_DOMAIN_NAME
+                elif state == LookupPageParserState.INVALID_DOMAIN_NAME:
+                    if "Invalid domain name" in data:
+                        response["valid"] = False
+                        state = LookupPageParserState.COMPLETE
 
         return response
 
