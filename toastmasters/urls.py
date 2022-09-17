@@ -29,4 +29,8 @@ urlpatterns = [
         include(("event.urls", "event"), namespace="event"),
     ),
     path("_nested_admin/", include("nested_admin.urls")),
+    path(
+        "pknic/",
+        include(("pknic.urls", "event"), namespace="pknic"),
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

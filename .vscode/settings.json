@@ -4,6 +4,7 @@
         "gamification",
         "gunicorn",
         "performedrole",
+        "pknic",
         "psycopg",
         "relativedelta",
         "whitenoise",
