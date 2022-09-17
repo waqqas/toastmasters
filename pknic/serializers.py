@@ -106,7 +106,7 @@ class DomainSerializer(serializers.Serializer):
                     response["domain"] = data
                     state = LookupPageParserState.INVALID_DOMAIN_NAME
                 elif state == LookupPageParserState.INVALID_DOMAIN_NAME:
-                    if "Invalid domain name" in data:
+                    if "invalid domain name" in data.lower():
                         response["valid"] = False
                         state = LookupPageParserState.COMPLETE
 
