@@ -3,6 +3,7 @@
         "dateutil",
         "gamification",
         "gunicorn",
+        "lxml",
         "performedrole",
         "pknic",
         "psycopg",
