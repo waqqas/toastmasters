@@ -7,6 +7,7 @@
         "performedrole",
         "pknic",
         "psycopg",
+        "Redoc",
         "relativedelta",
         "whitenoise",
         "wsgi"

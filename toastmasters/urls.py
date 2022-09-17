@@ -18,6 +18,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from .swagger_urls import swagger_urls
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path(
@@ -34,3 +36,5 @@ urlpatterns = [
         include(("pknic.urls", "event"), namespace="pknic"),
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += swagger_urls
