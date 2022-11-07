@@ -50,6 +50,10 @@ INSTALLED_APPS = [
     "event",
     "gamification",
     "nested_admin",
+    "rest_framework",
+    "rest_framework_api_key",
+    "django_filters",
+    "model_api",
 ]
 
 MIDDLEWARE = [
@@ -136,3 +140,5 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+API_KEY_CUSTOM_HEADER = "HTTP_X_API_KEY"

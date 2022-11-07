@@ -1,11 +1,14 @@
 {
     "cSpell.words": [
         "dateutil",
+        "filterset",
         "gamification",
         "gunicorn",
+        "paginations",
         "performedrole",
         "psycopg",
         "relativedelta",
+        "viewsets",
         "whitenoise",
         "wsgi"
     ]
