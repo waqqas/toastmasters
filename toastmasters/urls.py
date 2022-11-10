@@ -29,4 +29,8 @@ urlpatterns = [
         include(("event.urls", "event"), namespace="event"),
     ),
     path("_nested_admin/", include("nested_admin.urls")),
+    path(
+        "model_api/",
+        include(("model_api.urls", "model_api"), namespace="model_api"),
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
