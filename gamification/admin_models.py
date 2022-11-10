@@ -1,5 +1,12 @@
+import json
+
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
+
+User = get_user_model()
 
 
 class PointAdmin(admin.ModelAdmin):
@@ -65,6 +72,29 @@ class AwardedPointAdmin(admin.ModelAdmin):
         "performed__role",
         "performed__participation__event__held_on",
     )
+
+    def changelist_view(self, request, extra_context=None):
+        change_list = self.get_changelist_instance(request)
+
+        data = (
+            change_list.queryset.values("user")
+            .annotate(total_points=Sum("points"))
+            .order_by("-total_points")[:10]
+        )
+
+        top_users = [
+            User.objects.get(pk=user_id) for user_id in [item["user"] for item in data]
+        ]
+        labels = json.dumps(
+            [user.first_name for user in top_users], cls=DjangoJSONEncoder
+        )
+        points = json.dumps(
+            [item["total_points"] for item in data], cls=DjangoJSONEncoder
+        )
+
+        extra_context = extra_context or {"labels": labels, "points": points}
+
+        return super().changelist_view(request, extra_context=extra_context)
 
 
 class AwardAdmin(admin.ModelAdmin):
