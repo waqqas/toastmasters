@@ -1,6 +1,6 @@
-FROM python:3.9
+FROM python:3.11
 
-ENV POETRY_VERSION=1.2.0 \
+ENV POETRY_VERSION=1.4.2 \
   POETRY_VIRTUALENVS_CREATE=false \
   PATH="/root/.local/bin:$PATH"
 
