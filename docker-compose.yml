@@ -30,7 +30,14 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-    command: [ "postgres", "-p", "${POSTGRES_PORT}", "-c", "log_statement=all" ]
+    command:
+      [
+        "postgres",
+        "-p",
+        "${POSTGRES_PORT}",
+        "-c",
+        "log_statement=all"
+      ]
     healthcheck:
       test:
         [
@@ -68,5 +75,4 @@ volumes:
   home_data: null
 networks:
   toastmasters-net:
-    external:
-      name: toastmasters-net
+    external: true

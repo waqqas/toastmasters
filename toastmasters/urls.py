@@ -33,4 +33,8 @@ urlpatterns = [
         "model_api/",
         include(("model_api.urls", "model_api"), namespace="model_api"),
     ),
+    path(
+        "voting/",
+        include(("voting.urls", "voting"), namespace="voting"),
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
