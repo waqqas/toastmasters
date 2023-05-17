@@ -8,6 +8,7 @@
         "performedrole",
         "psycopg",
         "relativedelta",
+        "simplejwt",
         "viewsets",
         "whitenoise",
         "wsgi"

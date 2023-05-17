@@ -8,6 +8,7 @@ from django.db.models.expressions import F
 # from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, serializers, status, viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 
@@ -15,7 +16,7 @@ from .paginations import APISummaryPagination, ModelApiPagination
 
 
 class ModelViewSet(viewsets.ModelViewSet):
-    permission_classes = (HasAPIKey,)
+    permission_classes = (IsAuthenticated,)
     lookup_field = "id"
 
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]

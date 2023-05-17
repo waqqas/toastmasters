@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "nested_admin",
     "rest_framework",
     "rest_framework_api_key",
+    "rest_framework_simplejwt",
     "django_filters",
     "model_api",
     "voting",
@@ -143,3 +144,10 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 API_KEY_CUSTOM_HEADER = "HTTP_X_API_KEY"
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
