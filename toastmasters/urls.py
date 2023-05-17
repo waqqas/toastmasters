@@ -30,11 +30,15 @@ urlpatterns = [
     ),
     path("_nested_admin/", include("nested_admin.urls")),
     path(
-        "model_api/",
+        "api/",
         include(("model_api.urls", "model_api"), namespace="model_api"),
     ),
     path(
         "voting/",
         include(("voting.urls", "voting"), namespace="voting"),
+    ),
+    path(
+        "accounts/",
+        include(("accounts.urls", "accounts"), namespace="accounts"),
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
