@@ -12,9 +12,10 @@ class PollType(models.Model):
 
 
 class Poll(models.Model):
-    creator = models.ForeignKey(
+    owner = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="polls_created"
     )
+    is_active = models.BooleanField(default=False)
     candidates = models.ManyToManyField(User, related_name="polls_as_candidate")
     poll_type = models.ForeignKey(
         PollType, on_delete=models.CASCADE, related_name="polls"
