@@ -10,10 +10,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, serializers, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework_api_key.permissions import HasAPIKey
 
 from .paginations import APISummaryPagination, ModelApiPagination
-
 
 class ModelViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -66,8 +64,6 @@ class ModelViewSet(viewsets.ModelViewSet):
                         "ForeignKey",
                         "ManyToManyField",
                         "OneToOneField",
-                        "StripeForeignKey",
-                        "PaymentMethodForeignKey",
                     ]
                 ]
             }
@@ -76,14 +72,7 @@ class ModelViewSet(viewsets.ModelViewSet):
             for field in [
                 field
                 for field in model_cls._meta.get_fields()
-                if field.get_internal_type()
-                in [
-                    "ForeignKey",
-                    "ManyToManyField",
-                    "OneToOneField",
-                    "StripeForeignKey",
-                    "PaymentMethodForeignKey",
-                ]
+                if field.is_relation
             ]:
                 fieldset[field.name] = [
                     "exact",
@@ -127,14 +116,9 @@ class ModelViewSet(viewsets.ModelViewSet):
                 return model_cls.objects.all().prefetch_related(prefetch)
         else:
             return model_cls.objects.none()
-
-    def get_serializer_class(self, *args, **kwargs):
-        app_label, model_name = self.kwargs["model"].split(".")
-
-        model_cls = apps.get_model(app_label, model_name)
-        if issubclass(model_cls, models.Model):
-
-            class ListSerializer(serializers.ListSerializer):
+        
+    def get_list_serializer_class(self, model_cls):
+        class ListSerializer(serializers.ListSerializer):
                 def create(self, validated_data):
                     app_label, model_name = self.kwargs["model"].split(".")
 
@@ -152,16 +136,29 @@ class ModelViewSet(viewsets.ModelViewSet):
                             model_list, ignore_conflicts=ignore_conflicts
                         )
                     return []
+        return ListSerializer
+    
+    def get_model_serializer_class(self, model_cls):
+        distinct_list = self.request.query_params.getlist("_distinct", [])
+        _depth = int(self.request.query_params.get( "_depth", 0))
 
-            distinct_list = self.request.query_params.getlist("_distinct", [])
+        safe_fields = distinct_list if distinct_list else model_cls.safe_fields if hasattr(model_cls, "safe_fields") else "__all__"
 
-            class ModelSerializer(serializers.ModelSerializer):
-                class Meta:
-                    fields = "__all__" if not distinct_list else distinct_list
-                    model = model_cls
-                    list_serializer_class = ListSerializer
+        class ModelSerializer(serializers.ModelSerializer):
+            class Meta:
+                fields = safe_fields
+                model = model_cls
+                list_serializer_class = self.get_list_serializer_class(model_cls)
+                depth = _depth
 
-            return ModelSerializer
+        return ModelSerializer
+    
+    def get_serializer_class(self, *args, **kwargs):
+        app_label, model_name = self.kwargs["model"].split(".")
+
+        model_cls = apps.get_model(app_label, model_name)
+        if issubclass(model_cls, models.Model):
+            return self.get_model_serializer_class(model_cls)
 
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()
@@ -206,3 +203,4 @@ class ModelViewSet(viewsets.ModelViewSet):
             return queryset[: int(limit)]
         else:
             return queryset
+
