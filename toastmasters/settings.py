@@ -52,8 +52,10 @@ INSTALLED_APPS = [
     "gamification",
     "nested_admin",
     "rest_framework",
+    "rest_framework.authtoken",
     "rest_framework_api_key",
     "rest_framework_simplejwt",
+    "dj_rest_auth",
     "django_filters",
     "model_api",
     "voting",
@@ -150,9 +152,13 @@ API_KEY_CUSTOM_HEADER = "HTTP_X_API_KEY"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "ORDERING_PARAM": "_ordering",
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
 }
+
+
+OLD_PASSWORD_FIELD_ENABLED = False

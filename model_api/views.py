@@ -5,13 +5,16 @@ from django.conf import settings
 from django.db import models
 from django.db.models.expressions import F
 
-# from django.utils.translation import gettext_lazy as _
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, serializers, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .paginations import APISummaryPagination, ModelApiPagination
+
+
+model_serializer_class_cache = {}
+model_list_serializer_class_cache = {}
 
 class ModelViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -101,7 +104,8 @@ class ModelViewSet(viewsets.ModelViewSet):
         app_label, model_name = self.kwargs["model"].split(".")
 
         distinct_list = self.request.query_params.getlist("_distinct", [])
-        prefetch = self.request.query_params.get("_prefetch", None)
+        prefetch_related = self.request.query_params.get("_prefetch", None)
+        select_related = self.request.query_params.get("_select", None)
 
         model_cls = apps.get_model(app_label, model_name)
         if issubclass(model_cls, models.Model):
@@ -113,29 +117,38 @@ class ModelViewSet(viewsets.ModelViewSet):
                     .order_by(*distinct_list)
                 )
             else:
-                return model_cls.objects.all().prefetch_related(prefetch)
+                query = model_cls.objects.all()
+                if select_related:
+                    query = query.select_related(select_related)
+                if prefetch_related:
+                    query = query.prefetch_related(prefetch_related)
+                return query
         else:
             return model_cls.objects.none()
         
     def get_list_serializer_class(self, model_cls):
+        request = self.request
+
+        ignore_conflicts_param = self.request.query_params.get(
+            "_ignore_conflicts", "false"
+        )
+        ignore_conflicts = (
+            True if ignore_conflicts_param.lower() == "true" else False
+        )
+
+        cache_key = (model_cls, ignore_conflicts)
+
+        if cache_key in model_list_serializer_class_cache:
+            model_list_serializer_class_cache[cache_key]
+        
         class ListSerializer(serializers.ListSerializer):
                 def create(self, validated_data):
-                    app_label, model_name = self.kwargs["model"].split(".")
+                    model_list = [model_cls(**item) for item in validated_data]
+                    return model_cls.objects.bulk_create(
+                        model_list, ignore_conflicts=ignore_conflicts
+                    )
+        model_list_serializer_class_cache[cache_key] = ListSerializer
 
-                    model_cls = apps.get_model(app_label, model_name)
-                    if issubclass(model_cls, models.Model):
-                        ignore_conflicts_param = self.request.query_params.get(
-                            "_ignore_conflicts", "false"
-                        )
-                        ignore_conflicts = (
-                            True if ignore_conflicts_param.lower() == "true" else False
-                        )
-
-                        model_list = [model_cls(**item) for item in validated_data]
-                        return model_cls.objects.bulk_create(
-                            model_list, ignore_conflicts=ignore_conflicts
-                        )
-                    return []
         return ListSerializer
     
     def get_model_serializer_class(self, model_cls):
@@ -144,12 +157,19 @@ class ModelViewSet(viewsets.ModelViewSet):
 
         safe_fields = distinct_list if distinct_list else model_cls.safe_fields if hasattr(model_cls, "safe_fields") else "__all__"
 
+        cache_key = (model_cls, distinct_list, _depth, safe_fields)
+
+        if cache_key in model_serializer_class_cache:
+            return model_serializer_class_cache[cache_key]
+
         class ModelSerializer(serializers.ModelSerializer):
             class Meta:
                 fields = safe_fields
                 model = model_cls
                 list_serializer_class = self.get_list_serializer_class(model_cls)
                 depth = _depth
+
+        model_serializer_class_cache[cache_key] = ModelSerializer
 
         return ModelSerializer
     
