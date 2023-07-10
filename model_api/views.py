@@ -157,7 +157,7 @@ class ModelViewSet(viewsets.ModelViewSet):
 
         safe_fields = distinct_list if distinct_list else model_cls.safe_fields if hasattr(model_cls, "safe_fields") else "__all__"
 
-        cache_key = (model_cls, distinct_list, _depth, safe_fields)
+        cache_key = (model_cls, ",".join(distinct_list), _depth, ",".join(safe_fields))
 
         if cache_key in model_serializer_class_cache:
             return model_serializer_class_cache[cache_key]
