@@ -41,5 +41,6 @@ urlpatterns = [
         "accounts/",
         include(("accounts.urls", "accounts"), namespace="accounts"),
     ),
-    path('auth/', include('dj_rest_auth.urls'))
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/registration/', include('dj_rest_auth.registration.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

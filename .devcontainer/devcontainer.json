@@ -29,7 +29,9 @@
 		"streetsidesoftware.code-spell-checker",
 		"redhat.vscode-yaml",
 		"snyk-security.snyk-vulnerability-scanner",
-		"irongeek.vscode-env"
+		"irongeek.vscode-env",
+		"ms-python.black-formatter",
+		"ms-python.flake8",
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

@@ -22,8 +22,6 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
-    networks:
-      - toastmasters-net
 
   api_db:
     image: postgres
@@ -50,8 +48,6 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     restart: on-failure
-    networks:
-      - toastmasters-net
 
   api_server:
     build:
@@ -67,12 +63,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - toastmasters-net
 volumes:
   pg_data: null
   redis_data: null
   home_data: null
-networks:
-  toastmasters-net:
-    external: true
